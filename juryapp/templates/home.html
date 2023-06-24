@@ -2,40 +2,81 @@
 
 {% block content %}
 
-<div class="row min-vh-100">
+<div class="row min-vh-100 pe-5">
     <div class="col-sm-3 bg-dark">
-        <ul class="nav flex-column p-3">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'juryapp:send_all' jury.pk %}">All Jurors</a>
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+              <span class="fs-4">Juryapp</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item">
+                <a href="{% url 'juryapp:send_all' jury.pk %}" class="nav-link {% if page == 0 %} active {% else %} text-white {% endif%}" aria-current="page">
+                  All Jurors
+                </a>
               </li>
-            {% for panel in panels %}
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">Panel {{ panel.number }}</a>
-            </li>
-            {% endfor %}
-          </ul>
+              {% for panel in panels %}
+              <li>
+                <a class="nav-link {% if page == panel.number %} active {% else %} text-white {% endif%}" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">
+                  Panel {{ panel.number }}
+                </a>
+              </li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <strong>{{ request.user }}</strong>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </div>
+          </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-9 p-3">
+        <div class="row">
+            <div class="col-sm-10">
+        {% if page == 0 %}
+        <h2>All Jurors</h2>
+        {% else %}
+        <h2>Panel {{ page }}</h2>
+        {% endif %}
+        </div>
+        <div class="col-sm-2">
+            {% if qrcode_panel %}
+
+            <a class="float-end btn btn-primary" href="{% url 'juryapp:qr' qrcode_panel.pk %}">QR CODE</a>
+        
+            {% endif %}
+        </div>
+        </div>
+        <hr class="w-100 mb-3 mt-0">
         {% for message in messages %}
 
-        <div class="w-75 border rounded-2 p-2 m-2">
-            {{ message.message }}
+        <div class="w-100 border rounded-2 p-2 my-3 bg-light">
+            <div>{{ message.message }}</div>
+            <p class="mb-0">{{ message.timestamp }}</p>
         </div>
 
         {% endfor %}
-
+        <hr class="w-100 my-3">
         <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="button is-success is-fullwidth is-medium mt-5"
-            type="submit">Message
-    </button>
+        <div class="w-100 border rounded-2 my-3">
+            <div class="row">
+            <div class="col-sm-11">
+        {{ form }}
+    </div>
+    <div class="col-sm-1">
+        <button class="border-0 bg-white pe-4 py-3"
+            type="submit"><i type="submit" class="bi bi-send-fill" style="font-size: 28px;"></i></button>
+        </div>
+        </div>
+    </div>
 </form>
-    {% if qrcode_panel %}
-
-    <a href="{% url 'juryapp:qr' qrcode_panel.pk %}">QR CODE</a>
-
-    {% endif %}
     </div>
 </div>
 

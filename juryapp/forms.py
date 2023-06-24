@@ -3,7 +3,15 @@ from .models import *
 from phonenumber_field.formfields import PhoneNumberField
 
 class MessageForm(forms.ModelForm):
-    message = forms.CharField(required=True)
+    message = forms.CharField(
+        required=True,
+        widget=forms.widgets.TextInput(
+            attrs={
+                "placeholder": "Message to jurors...",
+                "class": "border-0 p-3 h-100 w-100",
+            }
+        ),
+        label="",)
 
     class Meta:
         model = Message

@@ -2,8 +2,8 @@
 
 {% load qr_code %}
 
-{{ link }}
+<div>{% qr_from_text link size="m" image_format="png" error_correction="L" %}</div>
 
-{% qr_from_text link size="m" image_format="png" error_correction="L" %}
+<a href="{% url 'juryapp:send_panel' jury.pk panel_num %}">Back to jury dashboard</a>
         
 {% endblock content %}

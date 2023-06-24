@@ -27,8 +27,8 @@ def send_all(request, jury):
     panels = Panel.objects.filter(jury=jury)
     query = Message.objects.none()
     for panel in panels:
-         query = query.union(Message.objects.filter(panel=panel))
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels})
+         query = query.union(Message.objects.filter(panel=panel)).order_by('-timestamp')
+    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "page":0})
 
 @login_required
 def send_panel(request, jury, panel_num):
@@ -48,8 +48,8 @@ def send_panel(request, jury, panel_num):
     jury = Jury.objects.get(pk=jury)
     panels = Panel.objects.filter(jury=jury)
     panel = Panel.objects.get(jury=jury, number=panel_num)
-    query = Message.objects.filter(panel=panel)
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "qrcode_panel":panel})
+    query = Message.objects.filter(panel=panel).order_by('-timestamp')
+    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "qrcode_panel":panel, "page":int(panel_num)})
 
 @login_required
 def create_jury(request):
@@ -85,8 +85,10 @@ def dash(request, panel):
 
 def qr(request, panel):
     panel = Panel.objects.get(pk=panel)
+    jury = Jury.objects.get(pk=panel.jury.pk)
+    panel_num = panel.number
     url = ("https://juryapp-production.up.railway.app/add/"+str(panel.pk))
-    return render(request, "qrcode.html", {"link":url})
+    return render(request, "qrcode.html", {"link":url, "panel_num":panel_num, "jury":jury})
 
 def register(request):
     if request.method =='POST':
