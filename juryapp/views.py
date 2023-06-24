@@ -85,7 +85,7 @@ def dash(request, panel):
 
 def qr(request, panel):
     panel = Panel.objects.get(pk=panel)
-    url = ("juryapp-production.up.railway.app/add/"+str(panel.pk))
+    url = ("https://juryapp-production.up.railway.app/add/"+str(panel.pk))
     return render(request, "qrcode.html", {"link":url})
 
 def register(request):
