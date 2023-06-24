@@ -11,17 +11,15 @@
 </head>
 <body class="">
     {% if user.is_authenticated %}
+    {% if top_nav %}
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark px-2">
         <div class="container-fluid">
-          <a class="navbar-brand text-light" href="#"><strong>Juryapp</strong></a>
+          <a class="navbar-brand text-light" href="{% url 'juryapp:create' %}"><strong>Juryapp</strong></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item mx-2">
-                <a class="nav-link text-light" aria-current="page" href="">Dashboard</a>
-              </li>
               <li class="nav-item mx-2">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
                   Create New Jury
@@ -35,13 +33,12 @@
               <strong>{{ request.user }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
           </div>
         </div>
       </nav>
+      {% endif %}
       {% endif %}
             {% block content %}
         

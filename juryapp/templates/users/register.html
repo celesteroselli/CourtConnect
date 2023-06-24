@@ -1,13 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'account_base.html' %}
 
 {% block content %}
-<h2>Register</h2>
+<h1 class="text-center">Register</h1>
 
-<form method="post">
+<style>
+    label, input {
+        display: block;
+    }
+    span.helptext {
+        display: none;
+    }
+</style>
+
+<form class="py-3 w-100" method="post">
     {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Register">
+    <label class="form-label">Username</label>
+    {{ form.username }}
+    <label class="form-label pt-2">Email Address</label>
+    {{ form.email }}
+    <label class="form-label pt-2">Password</label>
+    {{ form.password1 }}
+    <label class="form-label pt-2">Confirm Password</label>
+    {{ form.password2 }}
+    <button class="btn btn-success mt-3" type="submit">Create Account</button>
 </form>
-
-<a href="{% url 'login' %}">Back to login</a>
+<a href="{% url 'login' %}">Login instead</a>
 {% endblock %}

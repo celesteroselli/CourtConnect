@@ -7,7 +7,7 @@
 
 {% for jury in list %}
 <div class="col">
-<div class="card bg-light" style="width: 18rem;">
+<div class="card bg-light" style="width: 23rem;">
     <a class="text-dark text-decoration-none" href="{% url 'juryapp:send_all' jury.pk %}"><div class="card-body">
       <h5 class="card-title"><strong>Jury: {{ jury.casename }}</strong></h5></a>
     </div>

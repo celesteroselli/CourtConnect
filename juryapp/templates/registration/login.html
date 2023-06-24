@@ -1,14 +1,27 @@
 <!--users/templates/registration/login.html-->
 
-{% extends 'base.html' %}
+{% extends 'account_base.html' %}
 
 {% block content %}
-<h2>Login</h2>
 
-<form method="post">
+<style>
+    label, input {
+        display: block;
+    }
+    span.helptext {
+        display: none;
+    }
+</style>
+
+<h1 class="text-center">Login</h1>
+
+<form class="py-3 w-100" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
+    <label class="form-label">Username</label>
+    {{ form.username }}
+    <label class="form-label pt-2">Password</label>
+    {{ form.password }}
+    <button class="btn btn-success mt-3" type="submit">Login</button>
 </form>
-<a href="{% url 'juryapp:register' %}">Register</a>
+<a href="{% url 'juryapp:register' %}">Create account instead</a>
 {% endblock %}

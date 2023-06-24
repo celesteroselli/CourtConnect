@@ -21,4 +21,5 @@ urlpatterns = [
     url(r"^accounts/", include("django.contrib.auth.urls")),
     path("", include("juryapp.urls")),
     path('admin/', admin.site.urls),
+    path('qr_code/', include('qr_code.urls', namespace="qr_code")),
 ]

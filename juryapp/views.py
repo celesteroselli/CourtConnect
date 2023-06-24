@@ -62,7 +62,7 @@ def create_jury(request):
                     Panel.objects.create(jury=jury, number=x)
     form = JuryCreate()
     list = Jury.objects.filter(judge=request.user)
-    return render(request, "create.html", {"form": form, "list": list})
+    return render(request, "create.html", {"form": form, "list": list, "top_nav": True})
 
 def add_number(request, panel):
     if request.method == "POST":
@@ -88,7 +88,7 @@ def qr(request, panel):
     jury = Jury.objects.get(pk=panel.jury.pk)
     panel_num = panel.number
     url = ("https://juryapp-production.up.railway.app/add/"+str(panel.pk))
-    return render(request, "qrcode.html", {"link":url, "panel_num":panel_num, "jury":jury})
+    return render(request, "qrcode.html", {"link":url, "panel_num":panel_num, "jury":jury, "top_nav": True})
 
 def register(request):
     if request.method =='POST':

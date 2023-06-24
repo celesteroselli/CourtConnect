@@ -1,9 +1,12 @@
+{% extends 'base.html' %}
+
 {% block content %}
 
 {% load qr_code %}
 
-<div>{% qr_from_text link size="m" image_format="png" error_correction="L" %}</div>
-
-<a href="{% url 'juryapp:send_panel' jury.pk panel_num %}">Back to jury dashboard</a>
-        
+<div class="d-flex justify-content-center">
+<div>{% qr_from_text link size="s" image_format="png" error_correction="L" %}</a></div>
+</div>
+<p class="text-center">Right click to download or print image</p>
+<p class="text-center"><a href="{% url 'juryapp:send_panel' jury.pk panel_num %}">Back to Panel Dashboard</a></p>
 {% endblock content %}
