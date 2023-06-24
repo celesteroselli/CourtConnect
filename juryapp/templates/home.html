@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row min-vh-100">
+    <div class="col-sm-3 bg-dark">
+        <ul class="nav flex-column p-3">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'juryapp:send_all' jury.pk %}">All Jurors</a>
+              </li>
+            {% for panel in panels %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">Panel {{ panel.number }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+    </div>
+    <div class="col-sm-9">
+        {% for message in messages %}
+
+        <div class="w-75 border rounded-2 p-2 m-2">
+            {{ message.message }}
+        </div>
+
+        {% endfor %}
+
+        <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button is-success is-fullwidth is-medium mt-5"
+            type="submit">Message
+    </button>
+</form>
+    {% if qrcode_panel %}
+
+    <a href="{% url 'juryapp:qr' qrcode_panel.pk %}">QR CODE</a>
+
+    {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

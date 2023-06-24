@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="min-vh-100">
+    <div class="">
+        {% for message in messages %}
+
+        <div class="w-75 border rounded-2 p-2 m-2">
+            {{ message.message }}
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

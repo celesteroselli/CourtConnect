@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for jury in list %}
+
+<a href="{% url 'juryapp:send_all' jury.pk %}">{{ jury.pk }}</a>
+
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button is-success is-fullwidth is-medium mt-5"
+            type="submit">Create
+    </button>
+</form>
+
+{% endblock content %}

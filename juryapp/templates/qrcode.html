@@ -1,0 +1,9 @@
+{% block content %}
+
+{% load qr_code %}
+
+{{ link }}
+
+{% qr_from_text link size="m" image_format="png" error_correction="L" %}
+        
+{% endblock content %}
