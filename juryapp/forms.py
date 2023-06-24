@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from phonenumber_field.formfields import PhoneNumberField
 
 class MessageForm(forms.ModelForm):
     message = forms.CharField(required=True)
@@ -12,7 +13,7 @@ class JuryCreate(forms.Form):
     panel_num = forms.IntegerField(required=True)
 
 class AddJuror(forms.ModelForm):
-    number = forms.IntegerField(required=True)
+    number = PhoneNumberField(region="US")
 
     class Meta:
         model = Number

@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_random_id_model import RandomIDModel
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Number(models.Model):
-    number = models.IntegerField()
+    number = PhoneNumberField()
     def __str__(self):
          return str(self.number)
 

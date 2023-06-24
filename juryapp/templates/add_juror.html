@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

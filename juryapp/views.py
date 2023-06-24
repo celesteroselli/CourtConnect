@@ -66,8 +66,10 @@ def create_jury(request):
 
 def add_number(request, panel):
     if request.method == "POST":
+        print("POST")
         form = AddJuror(request.POST)
         if form.is_valid():
+            print("VALID")
             juror = form.save(commit=False)
             juror.save()
             juror_panel = Panel.objects.get(pk=panel)

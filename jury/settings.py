@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'juryapp',
     'qr_code',
+    "phonenumber_field",
+    'phonenumbers',
 ]
 
 MIDDLEWARE = [
