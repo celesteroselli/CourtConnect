@@ -87,14 +87,11 @@ def qr(request, panel):
     return render(request, "qrcode.html", {"link":url})
 
 def register(request):
-    if request.method == "GET":
-        return render(
-            request, "users/register.html",
-            {"form": CustomUserCreationForm}
-        )
-    elif request.method == "POST":
+    if request.method =='POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('juryapp:create')
+            form.save()
+            return redirect(reverse('juryapp:create'))
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'users/register.html', {'form': form})
