@@ -17,3 +17,9 @@ class AddJuror(forms.ModelForm):
     class Meta:
         model = Number
         fields = ("number",)
+
+from django.contrib.auth.forms import UserCreationForm
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = UserCreationForm.Meta.fields + ("email",)

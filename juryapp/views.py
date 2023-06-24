@@ -3,7 +3,11 @@ from django.shortcuts import redirect
 from .models import Panel, Jury, User, Message
 from .forms import *
 from .text import text
+from django.contrib.auth import login
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def send_all(request, jury):
     if request.method == "POST":
             form = MessageForm(request.POST)
@@ -26,6 +30,7 @@ def send_all(request, jury):
          query = query.union(Message.objects.filter(panel=panel))
     return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels})
 
+@login_required
 def send_panel(request, jury, panel_num):
     if request.method == "POST":
             form = MessageForm(request.POST)
@@ -46,6 +51,7 @@ def send_panel(request, jury, panel_num):
     query = Message.objects.filter(panel=panel)
     return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "qrcode_panel":panel})
 
+@login_required
 def create_jury(request):
     if request.method == "POST":
             form = JuryCreate(request.POST)
@@ -79,3 +85,16 @@ def qr(request, panel):
     panel = Panel.objects.get(pk=panel)
     url = ("juryapp-production.up.railway.app/add/"+str(panel.pk))
     return render(request, "qrcode.html", {"link":url})
+
+def register(request):
+    if request.method == "GET":
+        return render(
+            request, "users/register.html",
+            {"form": CustomUserCreationForm}
+        )
+    elif request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect(reverse("create"))
