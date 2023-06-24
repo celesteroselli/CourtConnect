@@ -11,8 +11,9 @@ class Number(models.Model):
 
 class Jury(RandomIDModel):
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
+    casename = models.CharField(max_length=100, default="")
     def __str__(self):
-         return str(self.pk)
+         return str(self.casename)
 
 class Panel(RandomIDModel):
     jury = models.ForeignKey(Jury, on_delete=models.CASCADE)

@@ -18,7 +18,22 @@ class MessageForm(forms.ModelForm):
         exclude = ("judge", "panel",)
 
 class JuryCreate(forms.Form):
-    panel_num = forms.IntegerField(required=True)
+    panel_num = forms.IntegerField(required=True,
+    widget=forms.widgets.TextInput(
+            attrs={
+                "placeholder": "Number of panels",
+                "class": "form-control w-100",
+            }
+        ),
+        label="",)
+    casename = forms.CharField(required=True,
+    widget=forms.widgets.TextInput(
+            attrs={
+                "placeholder": "Casename",
+                "class": "form-control w-100",
+            }
+        ),
+        label="",)
 
 class AddJuror(forms.ModelForm):
     number = PhoneNumberField(region="US")

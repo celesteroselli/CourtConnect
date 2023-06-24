@@ -57,7 +57,7 @@ def create_jury(request):
             form = JuryCreate(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                jury = Jury.objects.create(judge=request.user)
+                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
                 for x in range(1, (data.get('panel_num')+1)):
                     Panel.objects.create(jury=jury, number=x)
     form = JuryCreate()
@@ -99,3 +99,8 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
+def delete(request, jury):
+     jury = Jury.objects.get(pk=jury)
+     jury.delete()
+     return redirect(reverse('juryapp:create'))

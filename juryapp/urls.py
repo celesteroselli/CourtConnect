@@ -11,5 +11,6 @@ urlpatterns = [
     path("add/<panel>/", add_number, name="add_juror"),
     path("dash/<panel>/", dash, name="dash"),
     path("qr/<panel>/", qr, name="qr"),
+    path("delete/<jury>/", delete, name="delete"),
     url(r"^register/", register, name="register"),
 ]
