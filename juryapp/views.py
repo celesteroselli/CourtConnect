@@ -6,6 +6,7 @@ from .text import text
 from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 @login_required
 def send_all(request, jury):
@@ -20,15 +21,20 @@ def send_all(request, jury):
                 for panel in panels:
                     message.panel.add(panel)
                     for member in panel.members.all():
-                         text(member, message)
+                         #text(member, message)
                          pass
     form = MessageForm()
     jury = Jury.objects.get(pk=jury)
     panels = Panel.objects.filter(jury=jury)
     query = Message.objects.none()
+    members = Number.objects.none()
     for panel in panels:
          query = query.union(Message.objects.filter(panel=panel)).order_by('-timestamp')
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "page":0})
+         members = members.union(panel.members.all())
+    paginator = Paginator(query, 10)  # Show 25 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "home.html", {"form": form, "jury": jury, "messages": page_obj, "panels":panels, "page":0, "members":members})
 
 @login_required
 def send_panel(request, jury, panel_num):
@@ -42,14 +48,18 @@ def send_panel(request, jury, panel_num):
                 message.save()
                 message.panel.add(message_panel)
                 for member in message_panel.members.all():
-                         text(member, message)
+                         #text(member, message)
                          pass
     form = MessageForm()
     jury = Jury.objects.get(pk=jury)
     panels = Panel.objects.filter(jury=jury)
     panel = Panel.objects.get(jury=jury, number=panel_num)
     query = Message.objects.filter(panel=panel).order_by('-timestamp')
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": query, "panels":panels, "qrcode_panel":panel, "page":int(panel_num)})
+    members = panel.members.all()
+    paginator = Paginator(query, 10)  # Show 25 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "home.html", {"form": form, "jury": jury, "messages": page_obj, "panels":panels, "qrcode_panel":panel, "page":int(panel_num), "members":members})
 
 @login_required
 def create_jury(request):
