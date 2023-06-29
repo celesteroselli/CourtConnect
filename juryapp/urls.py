@@ -7,10 +7,12 @@ app_name = "juryapp"
 urlpatterns = [
     path("jury/<jury>/<panel_num>/", send_panel, name="send_panel"),
     path("jury/<jury>/", send_all, name="send_all"),
-    path("", create_jury, name="create"),
+    path("", home, name="home"),
+    path("home", create_jury, name="create"),
     path("add/<panel>/", add_number, name="add_juror"),
-    path("dash/<panel>/", dash, name="dash"),
+    path("dash/<panel>/<number>/", dash, name="dash"),
     path("qr/<panel>/", qr, name="qr"),
     path("delete/<jury>/", delete, name="delete"),
+    path("delete/<member>/<jury>/", delete_number, name="delete_number"),
     url(r"^register/", register, name="register"),
 ]

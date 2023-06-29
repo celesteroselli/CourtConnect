@@ -21,7 +21,7 @@ def send_all(request, jury):
                 for panel in panels:
                     message.panel.add(panel)
                     for member in panel.members.all():
-                         #text(member, message)
+                         text(member, message)
                          pass
     form = MessageForm()
     jury = Jury.objects.get(pk=jury)
@@ -48,7 +48,7 @@ def send_panel(request, jury, panel_num):
                 message.save()
                 message.panel.add(message_panel)
                 for member in message_panel.members.all():
-                         #text(member, message)
+                         text(member, message)
                          pass
     form = MessageForm()
     jury = Jury.objects.get(pk=jury)
@@ -74,6 +74,23 @@ def create_jury(request):
     list = Jury.objects.filter(judge=request.user)
     return render(request, "create.html", {"form": form, "list": list, "top_nav": True})
 
+@login_required
+def home(request):
+    juries = Jury.objects.filter(judge=request.user)
+    if juries.count() == 1:
+         jury = Jury.objects.get(judge=request.user)
+         return redirect('juryapp:send_all', jury.pk)
+    if request.method == "POST":
+            form = JuryCreate(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
+                for x in range(1, (data.get('panel_num')+1)):
+                    Panel.objects.create(jury=jury, number=x)
+    form = JuryCreate()
+    list = Jury.objects.filter(judge=request.user)
+    return render(request, "create.html", {"form": form, "list": list, "top_nav": True})
+
 def add_number(request, panel):
     if request.method == "POST":
         print("POST")
@@ -84,14 +101,16 @@ def add_number(request, panel):
             juror.save()
             juror_panel = Panel.objects.get(pk=panel)
             juror_panel.members.add(juror)
-            return redirect('juryapp:dash', panel)
+            number = juror.pk
+            return redirect('juryapp:dash', panel, number)
     form = AddJuror()
     return render(request, "add_juror.html", {"form": form})
 
-def dash(request, panel):
-    messages = Message.objects.filter(panel=panel)
+def dash(request, panel, number):
     dash_panel = Panel.objects.get(pk=panel)
-    return render(request, "dash.html", {"messages": messages, "panel": dash_panel})
+    panel_num = dash_panel.number
+    number = Number.objects.get(pk=number)
+    return render(request, "dash.html", {"number": number, "panel_num": panel_num})
 
 def qr(request, panel):
     panel = Panel.objects.get(pk=panel)
@@ -113,4 +132,10 @@ def register(request):
 def delete(request, jury):
      jury = Jury.objects.get(pk=jury)
      jury.delete()
-     return redirect(reverse('juryapp:create'))
+     return redirect('juryapp:create')
+
+def delete_number(request, member, jury):
+     number = Number.objects.get(pk=member)
+     number.delete()
+     jury=Jury.objects.get(pk=jury)
+     return redirect('juryapp:send_all', jury.pk)
