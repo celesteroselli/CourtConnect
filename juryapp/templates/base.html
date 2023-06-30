@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{% static 'styles.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,30 +14,24 @@
 <body class="">
     {% if user.is_authenticated %}
     {% if top_nav %}
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark px-2">
-        <div class="container-fluid">
-          <a class="navbar-brand text-light fs-4" href="{% url 'juryapp:create' %}">CourtConnect</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item mx-2">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+    <nav class="navbar bg-body-tertiary bg-dark px-2">
+        <div class="row w-100">
+          <div class="col-sm-9">
+          <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:create' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
+        </div>
+          <div class="col-sm-3 d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-blue h-75" data-bs-toggle="modal" data-bs-target="#createModal">
                   Create New Jury
                 </button>
-                
-              </li>
-            </ul>
-          </div>
-          <div class="dropdown float-end">
+          <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               <strong>{{ request.user }}</strong>
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark text-small shadow">
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
-          </div>
+        </div>
+      </div>
         </div>
       </nav>
       {% endif %}
@@ -58,7 +54,7 @@
         <form method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          <button class="btn btn-success"
+          <button class="btn btn-blue"
                   type="submit">Submit
           </button>
       </form>

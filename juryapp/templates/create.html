@@ -7,7 +7,7 @@
   <h2 class="py-3">Welcome back, Judge {{request.user|title}}</h2>
 
   <hr>
-
+  {% if list %}
   <div class="pt-3 row row-cols-4">
 
 {% for jury in list %}
@@ -16,7 +16,7 @@
     <div>
     <a class="text-decoration-none text-center" href="{% url 'juryapp:send_all' jury.pk %}"><h3>{{ jury.casename|title }}</h3></a>
     <div class="d-flex justify-content-center pt-3">
-    <button type="button" class="btn btn-danger text-center" data-bs-toggle="modal" data-bs-target="#j{{jury}}">
+    <button type="button" class="btn btn-danger text-center" data-bs-toggle="modal" data-bs-target="#j{{jury.pk}}">
       Delete
     </button>    
   </div>
@@ -25,11 +25,19 @@
   </div>
 {% endfor %}
 </div>
+{% else %}
+<h3 class="text-center py-3">No current juries active. Want to create one?</h3>
+<div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-blue fs-5" data-bs-toggle="modal" data-bs-target="#createModal">
+    Create New Jury
+  </button>
+</div>
 </div>
 <div>
+  {% endif %}
 {% for jury in list %}
 <!--Delete Modal-->
-<div class="modal fade" id="j{{jury}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="j{{jury.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

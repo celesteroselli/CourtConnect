@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 
 <div class="row min-vh-100 pe-5">
     <div class="col-sm-3 bg-dark">
         <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
             <a href="{% url 'juryapp:create' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-              <span class="fs-4">CourtConnect</span>
+              <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:create' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
             </a>
             <hr class="border border-white border-1 opacity-75">
             <span class="fs-5 text-light pb-3">{{jury.casename|title}}</span>
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                <a href="{% url 'juryapp:send_all' jury.pk %}" class="nav-link {% if page == 0 %} active {% else %} text-white {% endif%}" aria-current="page">
+                <a href="{% url 'juryapp:send_all' jury.pk %}" class="nav-link {% if page == 0 %} active bg-blue {% else %} text-white {% endif%}" aria-current="page">
                   All Jurors
                 </a>
               </li>
               {% for panel in panels %}
               <li>
-                <a class="nav-link {% if page == panel.number %} active {% else %} text-white {% endif%}" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">
+                <a class="nav-link {% if page == panel.number %} active bg-blue {% else %} text-white {% endif%}" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">
                   Panel {{ panel.number }}
                 </a>
               </li>
@@ -51,14 +52,14 @@
       {% if qrcode_panel %}
         <div class="col-sm-2">
 
-            <a class="float-end btn btn-primary" href="{% url 'juryapp:qr' qrcode_panel.pk %}">QR CODE</a>
+            <a class="float-end btn btn-blue" href="{% url 'juryapp:qr' qrcode_panel.pk %}">QR CODE</a>
         
         </div>
         {% endif %}
         <div class="col-sm-2">
           {% if members %}
         <div class="dropdown float-end">
-          <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="btn btn-blue dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             Members
           </a>
         
