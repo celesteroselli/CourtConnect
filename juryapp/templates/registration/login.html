@@ -13,7 +13,7 @@
     }
 </style>
 
-<h1 class="text-center">Login</h1>
+<h1 class="text-center pt-2">Login</h1>
 
 <form class="py-3 w-100" method="post">
     {% csrf_token %}
@@ -21,7 +21,7 @@
     {{ form.username }}
     <label class="form-label pt-2">Password</label>
     {{ form.password }}
-    <button class="btn btn-success mt-3" type="submit">Login</button>
+    <button class="btn btn-blue mt-3" type="submit">Login</button>
 </form>
 <a href="{% url 'juryapp:register' %}">Create account instead</a>
 {% endblock %}

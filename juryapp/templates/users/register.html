@@ -1,7 +1,7 @@
 {% extends 'account_base.html' %}
 
 {% block content %}
-<h1 class="text-center">Register</h1>
+<h1 class="text-center pt-2">Register</h1>
 
 <style>
     label, input {
@@ -22,7 +22,7 @@
     {{ form.password1 }}
     <label class="form-label pt-2">Confirm Password</label>
     {{ form.password2 }}
-    <button class="btn btn-success mt-3" type="submit">Create Account</button>
+    <button class="btn btn-blue mt-3" type="submit">Create Account</button>
 </form>
 <a href="{% url 'login' %}">Login instead</a>
 {% endblock %}
