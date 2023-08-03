@@ -17,7 +17,7 @@
     <nav class="navbar bg-body-tertiary bg-dark px-2">
         <div class="row w-100">
           <div class="col-sm-9">
-          <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:create' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
+          <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:home' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
         </div>
           <div class="col-sm-3 d-flex justify-content-between align-items-center">
           <button type="button" class="btn btn-blue h-75" data-bs-toggle="modal" data-bs-target="#createModal">
@@ -53,7 +53,7 @@
       <div class="modal-body">
         <form method="post">
           {% csrf_token %}
-          {{ form.as_p }}
+          {{ jury_form.as_p }}
           <button class="btn btn-blue"
                   type="submit">Submit
           </button>

@@ -3,6 +3,12 @@
 - BLUE BUTTON
 ------------------------------------*/
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
 :root {
     --main-bg: #2e9aff;
     --bg2: #0081fa;

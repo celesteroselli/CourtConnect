@@ -9,36 +9,63 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 @login_required
+def home(request):
+    jury_list = Jury.objects.filter(judge=request.user)
+    jury_form = JuryCreate()
+    message_form = MessageForm()
+    panels = Panel.objects.all()
+    if request.method == "POST":
+        if 'jury_form' in request.POST:
+            form = JuryCreate(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
+                for x in range(1, (data.get('panel_num')+1)):
+                    Panel.objects.create(jury=jury, number=x)
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "panels": panels})
+
+@login_required
 def send_all(request, jury):
     if request.method == "POST":
+        if 'message_form' in request.POST:
             form = MessageForm(request.POST)
             if form.is_valid():
                 message = form.save(commit=False)
                 message.judge = request.user
                 message_jury = Jury.objects.get(pk=jury)
-                panels = Panel.objects.filter(jury=message_jury)
+                message_panel = Panel.objects.filter(jury=message_jury)
                 message.save()
-                for panel in panels:
-                    message.panel.add(panel)
-                    for member in panel.members.all():
-                         text(member, message)
-                         pass
-    form = MessageForm()
+                for x in message_panel:
+                    message.panel.add(x)
+                    for member in x.members.all():
+                            text(member, message)
+                            pass
+        if 'jury_form' in request.POST:
+            form = JuryCreate(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
+                for x in range(1, (data.get('panel_num')+1)):
+                    Panel.objects.create(jury=jury, number=x)
+    jury_form = JuryCreate()
+    message_form = MessageForm()
+    jury_list = Jury.objects.filter(judge=request.user)
     jury = Jury.objects.get(pk=jury)
-    panels = Panel.objects.filter(jury=jury)
+    panels = Panel.objects.all()
     query = Message.objects.none()
     members = Number.objects.none()
     for panel in panels:
          query = query.union(Message.objects.filter(panel=panel)).order_by('-timestamp')
          members = members.union(panel.members.all())
-    paginator = Paginator(query, 10)  # Show 25 contacts per page.
+    paginator = Paginator(query, 5)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": page_obj, "panels":panels, "page":0, "members":members})
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":panels, "page":0, "members":members})
 
 @login_required
 def send_panel(request, jury, panel_num):
     if request.method == "POST":
+        if 'message_form' in request.POST:
             form = MessageForm(request.POST)
             if form.is_valid():
                 message = form.save(commit=False)
@@ -50,46 +77,25 @@ def send_panel(request, jury, panel_num):
                 for member in message_panel.members.all():
                          text(member, message)
                          pass
-    form = MessageForm()
+        if 'jury_form' in request.POST:
+            form = JuryCreate(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
+                for x in range(1, (data.get('panel_num')+1)):
+                    Panel.objects.create(jury=jury, number=x)
+    jury_form = JuryCreate()
+    message_form = MessageForm()
+    jury_list = Jury.objects.filter(judge=request.user)
     jury = Jury.objects.get(pk=jury)
-    panels = Panel.objects.filter(jury=jury)
+    panels = Panel.objects.all()
     panel = Panel.objects.get(jury=jury, number=panel_num)
     query = Message.objects.filter(panel=panel).order_by('-timestamp')
     members = panel.members.all()
-    paginator = Paginator(query, 10)  # Show 25 contacts per page.
+    paginator = Paginator(query, 5)  # Show 25 contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "home.html", {"form": form, "jury": jury, "messages": page_obj, "panels":panels, "qrcode_panel":panel, "page":int(panel_num), "members":members})
-
-@login_required
-def create_jury(request):
-    if request.method == "POST":
-            form = JuryCreate(request.POST)
-            if form.is_valid():
-                data = form.cleaned_data
-                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
-                for x in range(1, (data.get('panel_num')+1)):
-                    Panel.objects.create(jury=jury, number=x)
-    form = JuryCreate()
-    list = Jury.objects.filter(judge=request.user)
-    return render(request, "create.html", {"form": form, "list": list, "top_nav": True})
-
-@login_required
-def home(request):
-    juries = Jury.objects.filter(judge=request.user)
-    if juries.count() == 1:
-         jury = Jury.objects.get(judge=request.user)
-         return redirect('juryapp:send_all', jury.pk)
-    if request.method == "POST":
-            form = JuryCreate(request.POST)
-            if form.is_valid():
-                data = form.cleaned_data
-                jury = Jury.objects.create(judge=request.user, casename=data["casename"])
-                for x in range(1, (data.get('panel_num')+1)):
-                    Panel.objects.create(jury=jury, number=x)
-    form = JuryCreate()
-    list = Jury.objects.filter(judge=request.user)
-    return render(request, "create.html", {"form": form, "list": list, "top_nav": True})
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":panels, "qrcode_panel":panel, "page":int(panel_num), "members":members})
 
 def add_number(request, panel):
     if request.method == "POST":
@@ -124,7 +130,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('juryapp:create'))
+            return redirect(reverse('juryapp:home'))
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
@@ -132,7 +138,7 @@ def register(request):
 def delete(request, jury):
      jury = Jury.objects.get(pk=jury)
      jury.delete()
-     return redirect('juryapp:create')
+     return redirect('juryapp:home')
 
 def delete_number(request, member, jury):
      number = Number.objects.get(pk=member)

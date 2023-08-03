@@ -2,42 +2,67 @@
 
 {% block content %}
 {% load static %}
+<div class="container-fluid">
+<div class="row min-vh-100" style="max-width: 100%;">
+    <div class="col-lg-4 bg-dark">
+      <div class="row">
+      <div class="">
+        <div class="d-flex flex-column px-3 p-3 text-bg-dark">
+          <a href="{% url 'juryapp:home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:home' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
+          </a>
+          <hr class="border border-white border-1 opacity-75">
+          {% for object in jury_list %}
 
-<div class="row min-vh-100 pe-5">
-    <div class="col-sm-3 bg-dark">
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
-            <a href="{% url 'juryapp:create' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-              <a class="navbar-brand text-light fs-4 mx-3" href="{% url 'juryapp:create' %}">CourtConnect<img src="{% static 'logov1.png' %}" width="60px" class="me-2"></a>
-            </a>
-            <hr class="border border-white border-1 opacity-75">
-            <span class="fs-5 text-light pb-3">{{jury.casename|title}}</span>
-            <ul class="nav nav-pills flex-column mb-auto">
-              <li class="nav-item">
-                <a href="{% url 'juryapp:send_all' jury.pk %}" class="nav-link {% if page == 0 %} active bg-blue {% else %} text-white {% endif%}" aria-current="page">
-                  All Jurors
-                </a>
-              </li>
-              {% for panel in panels %}
-              <li>
-                <a class="nav-link {% if page == panel.number %} active bg-blue {% else %} text-white {% endif%}" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">
-                  Panel {{ panel.number }}
-                </a>
-              </li>
-                {% endfor %}
-            </ul>
-            <hr>
-            <div class="dropdown">
-              <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <strong>{{ request.user }}</strong>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-              </ul>
+          <div class="accordion accordion-flush rounded-2 mb-3" id="o{{object.id}}">
+            <div class="accordion-item bg-dark">
+              <h2 class="accordion-header bg-dark" id="heading{{object.id}}">
+                <button class="accordion-button bg-dark text-white fs-5 {% if jury != object %} collapsed {% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{object.id}}" aria-expanded="false" aria-controls="collapse{{object.id}}">
+                  <a data-bs-toggle="modal" data-bs-target="#j{{object.pk}}"><i class="bi bi-x-circle me-4"></i></a>
+                  {{object}}
+                </button>
+              </h2>
+              <div id="collapse{{object.id}}" class="accordion-collapse collapse {% if jury == object %} show {% endif %}" aria-labelledby="heading{{object.id}}" data-bs-parent="#o{{object.id}}">
+                <div class="accordion-body">
+                  
+                  <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                      <a href="{% url 'juryapp:send_all' object.pk %}" class="nav-link {% if page == 0 and jury == object %} active bg-blue {% else %} text-white {% endif%}" aria-current="page">
+                        All Jurors
+                      </a>
+                    </li>
+                    {% for panel in panels %}
+                    {% if panel.jury == object %}
+                    <li>
+                      <a class="nav-link {% if page == panel.number and jury == object %} active bg-blue {% else %} text-white {% endif%}" aria-current="page" href="{% url 'juryapp:send_panel' panel.jury.pk panel.number %}">
+                        Panel {{ panel.number }}
+                      </a>
+                    </li>
+                    {% endif %}
+                      {% endfor %}
+                  </ul>
+
+                </div>
+              </div>
             </div>
           </div>
+          
+          {% endfor %}
+          
+          <button type="button" class="btn btn-blue fs-5 mt-3" data-bs-toggle="modal" data-bs-target="#createModal">
+            Create New Jury
+          </button>
+
+        </div>
+        </div>
+        </div>
     </div>
-    <div class="col-sm-9 p-3">
-        <div class="row">
+    <div class="col-lg-8 p-4 ps-5">
+        <div class="row w-100">
+            {% if jury %}
+            <div>
+            <div class="row w-100">
+
           {% if members and qrcode_panel %}
             <div class="col-sm-8">
           {% else %}
@@ -77,15 +102,18 @@
         {% endif %}
       </div>
         </div>
+      </div>
+      <hr>
         {% for message in messages %}
 
-        <div class="w-100 border rounded-2 p-2 my-3 bg-light">
+        <div class="w-100 border rounded-2 p-2 my-2 bg-light">
             <div>{{ message.message }}</div>
             <p class="mb-0">{{ message.timestamp }}</p>
         </div>
 
         {% endfor %}
         {% if messages.has_previous or messages.has_next %}
+        <div class="container-fluid d-flex justify-content-center mt-2">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           {% if messages.has_previous %}
@@ -99,22 +127,30 @@
           {% endif %}
         </ul>
       </nav>
-      {% endif %}
-        <hr class="w-100 my-3">
+    </div>
+      {% endif %}   
+      </div>
+        <div class="w-100 position-fixed bottom-0 row start-0 pe-3 ps-5">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-8">
         <form method="post">
         {% csrf_token %}
         <div class="w-100 border rounded-2 my-3">
-            <div class="row">
-            <div class="col-sm-11">
-        {{ form }}
+        {{ message_form }}
     </div>
-    <div class="col-sm-1">
-        <button class="border-0 bg-white pe-4 py-3"
-            type="submit"><i type="submit" class="bi bi-send-fill" style="font-size: 28px;"></i></button>
-        </div>
-        </div>
+  </form>
+  </div>
     </div>
-</form>
+    {% else %}    
+    <h2>Welcome back, Judge {{ request.user }}</h2>
+    <hr>
+    <div class="h-100 d-flex justify-content-center align-items-center pt-5">
+      <img src="{% static 'logo-gray3.png' %}" width="450px" class="me-2">
+    </div>
+    </div>
+    </div>
+    {% endif %}
+</div>
     </div>
 </div>
 </div>
@@ -137,6 +173,28 @@
       </div>
     </div>
   </div>
+</div>
+{% endfor %}
+
+{% for jury in jury_list %}
+<!--Delete Modal-->
+<div class="modal fade" id="j{{jury.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure you want to delete this jury?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This action cannot be undone. All jurors and panels will be deleted. Message history will still be saved.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a class="btn btn-danger" href="{% url 'juryapp:delete' jury.pk %}">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% endfor %}
 

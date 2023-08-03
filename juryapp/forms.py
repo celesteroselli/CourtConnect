@@ -3,6 +3,7 @@ from .models import *
 from phonenumber_field.formfields import PhoneNumberField
 
 class MessageForm(forms.ModelForm):
+    message_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     message = forms.CharField(
         required=True,
         widget=forms.widgets.TextInput(
@@ -18,6 +19,7 @@ class MessageForm(forms.ModelForm):
         exclude = ("judge", "panel",)
 
 class JuryCreate(forms.Form):
+    jury_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     panel_num = forms.IntegerField(required=True,
     widget=forms.widgets.TextInput(
             attrs={
