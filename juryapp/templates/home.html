@@ -64,8 +64,8 @@
 {% for message in messages %}
 
 <div class="w-100 border rounded-2 p-2 my-2 bg-light">
-  <div>{{ message.message }}</div>
-  <p class="mb-0">{{ message.timestamp }}</p>
+  <div><p class="mb-0">{{ message.message }}</p></div>
+  <small class="mb-0 text-secondary">{{ message.timestamp }}</small>
 </div>
 
 {% endfor %}

@@ -61,16 +61,16 @@ def send_all(request, jury):
     message_form = MessageForm()
     jury_list = Jury.objects.filter(judge=request.user)
     jury = Jury.objects.get(pk=jury)
-    panels = Panel.objects.all()
+    panels = Panel.objects.filter(jury=jury)
     query = Message.objects.none()
     members = Number.objects.none()
     for panel in panels:
-         query = query.union(Message.objects.filter(panel=panel)).order_by('-timestamp')
-         members = members.union(panel.members.all())
+        query = query.union(Message.objects.filter(panel=panel)).order_by('-timestamp')
+        members = members.union(panel.members.all())
     paginator = Paginator(query, 5)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":panels, "page":0, "members":members})
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":Panel.objects.all(), "page":0, "members":members})
 
 @login_required
 def send_panel(request, jury, panel_num):
@@ -105,7 +105,8 @@ def send_panel(request, jury, panel_num):
     paginator = Paginator(query, 5)  # Show 25 contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":panels, "qrcode_panel":panel, "page":int(panel_num), "members":members})
+    link = "https://www.court-connect.net/add/" + str(panel.id)
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "jury": jury, "messages": page_obj, "panels":panels, "qrcode_panel":panel, "page":int(panel_num), "members":members, "link": link})
 
 def add_number(request, panel):
     if request.method == "POST":
