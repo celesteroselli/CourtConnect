@@ -185,3 +185,11 @@ button.bg-danger:focus {
 .accordion-item:hover .hover {
     opacity: 100%;
 }
+
+.enlarge:hover {
+    font-size: 33px;
+}
+
+.enlarge {
+    font-size: 28px;
+}

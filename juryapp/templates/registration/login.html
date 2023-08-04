@@ -19,6 +19,11 @@
 
 <form class="py-3 w-100" method="post">
     {% csrf_token %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.errors }}
+      </div>
+      {% endif %}
     <label class="form-label">Username</label>
     {{ form.username|add_class:'form-control' }}
     <label class="form-label pt-2">Password</label>

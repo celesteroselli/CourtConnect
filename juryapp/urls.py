@@ -12,5 +12,6 @@ urlpatterns = [
     path("dash/<panel>/<number>/", dash, name="dash"),
     path("delete/<jury>/", delete, name="delete"),
     path("delete/<member>/<jury>/", delete_number, name="delete_number"),
+    path("settings", settings, name="settings"),
     url(r"^register/", register, name="register"),
 ]

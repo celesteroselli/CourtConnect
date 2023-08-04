@@ -26,7 +26,8 @@ def home(request):
                 for x in range(1, (data.get('panel_num')+1)):
                     Panel.objects.create(jury=jury, number=x)
     user = User.objects.get(username=request.user)
-    diff = datetime.now(timezone.utc) - user.date_joined
+    diff = (datetime.now(timezone.utc) - user.date_joined)
+    print(diff)
     if diff.seconds < 20:
         first = True
     else:
@@ -154,3 +155,13 @@ def delete_number(request, member, jury):
      number.delete()
      jury=Jury.objects.get(pk=jury)
      return redirect('juryapp:send_all', jury.pk)
+
+def settings(request):
+    user = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        form = UpdateUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    else:
+        form = UpdateUserForm(initial={'username': user.username, 'email': user.email, 'first_name': user.first_name, 'last_name': user.last_name})
+    return render(request, 'settings.html', {'form': form})
