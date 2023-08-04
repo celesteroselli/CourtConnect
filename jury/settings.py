@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'qr_code',
     "phonenumber_field",
     'phonenumbers',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 
-LOGIN_REDIRECT_URL = "juryapp:create"
+LOGIN_REDIRECT_URL = "juryapp:home"
 
 LOGOUT_REDIRECT_URL = "login"
 

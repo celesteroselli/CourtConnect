@@ -177,3 +177,11 @@ button.bg-danger:focus {
 .btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-danger.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem var(--danger-dark);
 }
+
+.hover {
+    opacity: 0%;
+}
+
+.accordion-item:hover .hover {
+    opacity: 100%;
+}

@@ -10,7 +10,6 @@ urlpatterns = [
     path("", home, name="home"),
     path("add/<panel>/", add_number, name="add_juror"),
     path("dash/<panel>/<number>/", dash, name="dash"),
-    path("qr/<panel>/", qr, name="qr"),
     path("delete/<jury>/", delete, name="delete"),
     path("delete/<member>/<jury>/", delete_number, name="delete_number"),
     url(r"^register/", register, name="register"),

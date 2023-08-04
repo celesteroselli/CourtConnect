@@ -7,9 +7,12 @@ from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from datetime import *
+
 
 @login_required
 def home(request):
+    first = False
     jury_list = Jury.objects.filter(judge=request.user)
     jury_form = JuryCreate()
     message_form = MessageForm()
@@ -22,7 +25,13 @@ def home(request):
                 jury = Jury.objects.create(judge=request.user, casename=data["casename"])
                 for x in range(1, (data.get('panel_num')+1)):
                     Panel.objects.create(jury=jury, number=x)
-    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "panels": panels})
+    user = User.objects.get(username=request.user)
+    diff = datetime.now(timezone.utc) - user.date_joined
+    if diff.seconds < 20:
+        first = True
+    else:
+        first = False
+    return render(request, "home.html", {"jury_list": jury_list, "jury_form": jury_form, "message_form": message_form, "panels": panels, "first": first})
 
 @login_required
 def send_all(request, jury):
