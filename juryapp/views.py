@@ -44,11 +44,12 @@ def send_all(request, jury):
                 message.judge = request.user
                 message_jury = Jury.objects.get(pk=jury)
                 message_panel = Panel.objects.filter(jury=message_jury)
+                user = User.objects.get(username=request.user)
                 message.save()
                 for x in message_panel:
                     message.panel.add(x)
                     for member in x.members.all():
-                            text(member, message)
+                            text(member, message, user.last_name)
                             pass
         if 'jury_form' in request.POST:
             form = JuryCreate(request.POST)
@@ -84,8 +85,9 @@ def send_panel(request, jury, panel_num):
                 message_panel = Panel.objects.get(jury=message_jury, number=panel_num)
                 message.save()
                 message.panel.add(message_panel)
+                user = User.objects.get(username=request.user)
                 for member in message_panel.members.all():
-                         text(member, message)
+                         text(member, message, user.last_name)
                          pass
         if 'jury_form' in request.POST:
             form = JuryCreate(request.POST)

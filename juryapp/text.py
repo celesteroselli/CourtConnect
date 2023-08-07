@@ -8,12 +8,13 @@ auth_token  = "82c58513eee1cb97205665af63b8271a"
 
 client = Client(account_sid, auth_token)
 
-def text(member, message):
-    print(member, message)
+def text(member, mess, judge):
+    print(member, mess)
+    final = "Message from Judge " + str(judge) + ": " + str(mess)
 
     message = client.messages.create(
         to=(str(member)),
         from_="+18552311082",
-        body=message)
+        body=final)
 
     print(message.sid)
