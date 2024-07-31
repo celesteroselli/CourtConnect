@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,16 +82,9 @@ WSGI_APPLICATION = 'jury.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'xZNpWX3jVIGLeEJIA4yS',
-        'HOST': 'containers-us-west-55.railway.app',
-        'PORT': '5849',
-    }
-}
+db_url = os.environ["database"]
+DATABASES = {"default": dj_database_url.parse(db_url)}
+
 
 
 # Password validation
