@@ -1,0 +1,195 @@
+
+/*------------------------------------
+- BLUE BUTTON
+------------------------------------*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --main-bg: #2e9aff;
+    --bg2: #0081fa;
+    --text: #ffffff;
+    --dark: rgba(46, 154, 255, 0.5);
+    --bg3: #0a88ff;
+    --danger-main-bg: #ED7D38;
+    --danger-bg2: #dd6114;
+    --danger-dark: rgba(237, 125, 56, 0.5);
+    --danger-bg3: #ea6717;
+  }
+
+.bg-blue {
+    background-color: var(--main-bg) !important;
+}
+
+a.bg-blue:hover, a.bg-blue:focus,
+button.bg-blue:hover,
+button.bg-blue:focus {
+    background-color: var(--bg2) !important;
+}
+
+.border-blue {
+    border-color: var(--main-bg) !important;
+}
+
+.btn-blue {
+    color: var(--text);
+    background-color: var(--main-bg);
+    border-color: var(--main-bg);
+}
+
+.btn-blue:hover {
+    color: var(--text);
+    background-color: var(--bg3);
+    border-color: var(--bg2);
+}
+
+.btn-blue:focus, .btn-blue.focus {
+    box-shadow: 0 0 0 0.2rem var(--dark);
+}
+
+.btn-blue.disabled, .btn-blue:disabled {
+    color: var(--text);
+    background-color: var(--main-bg);
+    border-color: var(--main-bg);
+}
+
+.btn-blue:not(:disabled):not(.disabled):active, .btn-blue:not(:disabled):not(.disabled).active, .show > .btn-blue.dropdown-toggle {
+    color: var(--text);
+    background-color: var(--bg2);
+    border-color: var(--bg3);
+}
+
+.btn-blue:not(:disabled):not(.disabled):active:focus, .btn-blue:not(:disabled):not(.disabled).active:focus, .show > .btn-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem var(--dark);
+}
+
+.btn-outline-blue {
+    color: var(--main-bg);
+    background-color: transparent;
+    border-color: var(--main-bg);
+}
+
+.btn-outline-blue:hover {
+    color: var(--text);
+    background-color: var(--main-bg);
+    border-color: var(--main-bg);
+}
+
+.btn-outline-blue:focus, .btn-outline-blue.focus {
+    box-shadow: 0 0 0 0.2rem var(--dark);
+}
+
+.btn-outline-blue.disabled, .btn-outline-blue:disabled {
+    color: var(--main-bg);
+    background-color: transparent;
+}
+
+.btn-outline-blue:not(:disabled):not(.disabled):active, .btn-outline-blue:not(:disabled):not(.disabled).active, .show > .btn-outline-blue.dropdown-toggle {
+    color: var(--text);
+    background-color: var(--main-bg);
+    border-color: var(--main-bg);
+}
+
+.btn-outline-blue:not(:disabled):not(.disabled):active:focus, .btn-outline-blue:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem var(--dark);
+}
+
+/* DANGER BUTTON */
+
+
+.bg-danger {
+    background-color: var(--danger-main-bg) !important;
+}
+
+a.bg-danger:hover, a.bg-danger:focus,
+button.bg-danger:hover,
+button.bg-danger:focus {
+    background-color: var(--danger-bg2) !important;
+}
+
+.border-danger {
+    border-color: var(--danger-main-bg) !important;
+}
+
+.btn-danger {
+    color: var(--text);
+    background-color: var(--danger-main-bg);
+    border-color: var(--danger-main-bg);
+}
+
+.btn-danger:hover {
+    color: var(--text);
+    background-color: var(--danger-bg3);
+    border-color: var(--danger-bg2);
+}
+
+.btn-danger:focus, .btn-danger.focus {
+    box-shadow: 0 0 0 0.2rem var(--danger-dark);
+}
+
+.btn-danger.disabled, .btn-danger:disabled {
+    color: var(--text);
+    background-color: var(--danger-main-bg);
+    border-color: var(--danger-main-bg);
+}
+
+.btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active, .show > .btn-danger.dropdown-toggle {
+    color: var(--text);
+    background-color: var(--danger-bg2);
+    border-color: var(--danger-bg3);
+}
+
+.btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus, .show > .btn-danger.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem var(--danger-dark);
+}
+
+.btn-outline-danger {
+    color: var(--danger-main-bg);
+    background-color: transparent;
+    border-color: var(--danger-main-bg);
+}
+
+.btn-outline-danger:hover {
+    color: var(--text);
+    background-color: var(--danger-main-bg);
+    border-color: var(--danger-main-bg);
+}
+
+.btn-outline-danger:focus, .btn-outline-danger.focus {
+    box-shadow: 0 0 0 0.2rem var(--danger-dark);
+}
+
+.btn-outline-danger.disabled, .btn-outline-danger:disabled {
+    color: var(--danger-main-bg);
+    background-color: transparent;
+}
+
+.btn-outline-danger:not(:disabled):not(.disabled):active, .btn-outline-danger:not(:disabled):not(.disabled).active, .show > .btn-outline-danger.dropdown-toggle {
+    color: var(--text);
+    background-color: var(--danger-main-bg);
+    border-color: var(--danger-main-bg);
+}
+
+.btn-outline-danger:not(:disabled):not(.disabled):active:focus, .btn-outline-danger:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-danger.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem var(--danger-dark);
+}
+
+.hover {
+    opacity: 0%;
+}
+
+.accordion-item:hover .hover {
+    opacity: 100%;
+}
+
+.enlarge:hover {
+    font-size: 33px;
+}
+
+.enlarge {
+    font-size: 28px;
+}

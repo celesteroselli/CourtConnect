@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<script type="text/javascript">
+  window.onload = () => {
+    const myModal = new bootstrap.Modal('#onload');
+    myModal.show();
+  }
+</script>
+
+<div class="row w-100">
+  {% if jury %}
+  <div>
+  <div class="row w-100">
+
+{% if members and qrcode_panel %}
+  <div class="col-4">
+{% else %}
+<div class="col-8">
+  {% endif %}
+{% if page == 0 %}
+<h2>All Jurors</h2>
+{% else %}
+<h2>Panel {{ page }}</h2>
+{% endif %}
+</div>
+{% if qrcode_panel %}
+<div class="col-4">
+
+<button type="button" class="float-end btn btn-blue" data-bs-toggle="modal" data-bs-target="#q{{qrcode_panel.pk}}">
+  QR Code
+</button>
+
+</div>
+<!--endif QR-->
+{% endif %}
+<div class="col-4">
+{% if members %}
+<div class="dropdown float-end">
+<a class="btn btn-blue dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+  Members
+</a>
+
+<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+  {% for member in members %}
+  <li class="text-dark px-2 py-1 bg-light">
+    <div class="row">
+      <div class="col-sm-9">{{ member }}</div>
+      <div class="col-sm-3"><a type="button" data-bs-toggle="modal" data-bs-target="#m{{member.pk}}"><i class="bi bi-x-circle-fill"></i></a></div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+</div>
+<!--endif members-->
+{% endif %}
+</div>
+</div>
+</div>
+<hr class="mt-3">
+{% if messages %}
+{% for message in messages %}
+
+<div class="w-100 border rounded-2 p-2 my-2 bg-light">
+  <div><p class="mb-0">{{ message.message }}</p></div>
+  <small class="mb-0 text-secondary">{{ message.timestamp }}</small>
+</div>
+
+{% endfor %}
+{% if messages.has_previous or messages.has_next %}
+<div class="container-fluid d-flex justify-content-center mt-2">
+<nav aria-label="Page navigation example">
+<ul class="pagination">
+{% if messages.has_previous %}
+<li class="page-item"><a class="page-link" href="?page={{ messages.previous_page_number }}">Previous</a></li>
+{% endif %}
+{% for x in messages.paginator.page_range %}
+<li class="page-item"><a class="page-link" href="?page={{ x }}">{{ x }}</a></li>
+{% endfor %}
+{% if messages.has_next %}
+<li class="page-item"><a class="page-link" href="?page={{ messages.next_page_number }}">Next</a></li>
+{% endif %}
+</ul>
+</nav>
+</div>
+<!--endif messages has previous or next-->
+{% endif %}   
+</div>
+
+{% else %}
+<div class="h-100 d-flex justify-content-center align-items-center pt-5">
+<img src="{% static 'no_messages.png' %}" width="450px" class="me-2">
+</div>
+<!--endif messages-->
+{% endif %}
+<div class="w-100 position-fixed bottom-0 row start-0 pe-3 ps-5">
+<div class="col-lg-4"></div>
+<div class="col-lg-8">
+<form method="post">
+{% csrf_token %}
+<div class="w-100 border rounded-2 my-3">
+{{ message_form }}
+</div>
+</form>
+</div>
+</div>
+
+{% else %}    
+<h2>Welcome back, Judge {{ request.user.last_name }}</h2>
+<hr>
+<div class="h-100 d-flex justify-content-center align-items-center pt-5">
+<img src="{% static 'logo-gray3.png' %}" width="450px" class="me-2">
+</div>
+</div>
+<!--endif jury-->
+{% endif %}
+
+{% endblock content %}

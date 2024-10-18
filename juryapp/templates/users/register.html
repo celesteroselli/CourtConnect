@@ -1,0 +1,39 @@
+{% extends 'account_base.html' %}
+
+{% block content %}
+<h1 class="text-center pt-2">Register</h1>
+
+{% load widget_tweaks %}
+
+<style>
+    label, input {
+        display: block;
+    }
+    span.helptext {
+        display: none;
+    }
+</style>
+
+<form class="py-3 w-100" method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.errors }}
+      </div>
+      {% endif %}
+    <label class="form-label">Username</label>
+    {{ form.username|add_class:'form-control' }}
+    <label class="form-label pt-2">Email Address</label>
+    {{ form.email|add_class:'form-control' }}
+    <label class="form-label pt-2">First Name</label>
+    {{ form.first_name|add_class:'form-control' }}
+    <label class="form-label pt-2">Last Name</label>
+    {{ form.last_name|add_class:'form-control' }}
+    <label class="form-label pt-2">Password</label>
+    {{ form.password1|add_class:'form-control' }}
+    <label class="form-label pt-2">Confirm Password</label>
+    {{ form.password2|add_class:'form-control' }}
+    <button class="btn btn-blue mt-3" type="submit">Create Account</button>
+</form>
+<a href="{% url 'login' %}">Login instead</a>
+{% endblock %}

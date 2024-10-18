@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load widget_tweaks %}
+<div class="d-flex justify-content-between m-0 p-0">
+<h2 class="pb-2 m-0">Settings: Judge {{ request.user.first_name }} {{ request.user.last_name }}</h2>
+<a href="{% url 'juryapp:home' %}"><i class="bi bi-arrow-return-left enlarge text-dark"></i></a>
+</div>
+<hr class="">
+<div class="container">
+    <form class="py-3 w-100" method="post">
+        {% csrf_token %}
+        <label class="form-label">Username</label>
+        {{ form.username|add_class:'form-control' }}
+        <label class="form-label pt-2">Email Address</label>
+        {{ form.email|add_class:'form-control' }}
+        <label class="form-label pt-2">First Name</label>
+        {{ form.first_name|add_class:'form-control' }}
+        <label class="form-label pt-2">Last Name</label>
+        {{ form.last_name|add_class:'form-control' }}
+        <button class="btn btn-blue mt-3" type="submit">Save</button>
+    </form>
+</div>
+
+{% endblock content %}

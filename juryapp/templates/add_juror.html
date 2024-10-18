@@ -1,0 +1,20 @@
+{% extends 'account_base.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+<div class="py-4">
+<p class="text-center">Enter your number to receive SMS updates from the judge for your panel and the entire jury</p>
+<div class="d-flex justify-content-center">
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary"
+            type="submit">Submit
+    </button>
+</form>
+</div>
+</div>
+{% endblock content %}
