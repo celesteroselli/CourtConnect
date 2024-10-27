@@ -35,3 +35,4 @@ yarl==1.9.2
 wheel==0.43.0
 psycopg2-binary==2.9.9
 dj-database-url==2.2.0
+python-dotenv==1.0.1
